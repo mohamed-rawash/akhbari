@@ -8,8 +8,8 @@ import 'package:news_app/cubit/dio_helper.dart';
 import 'package:news_app/screens/business_screen.dart';
 import 'package:news_app/screens/home.dart';
 import 'package:news_app/screens/science_screen.dart';
-import 'package:news_app/screens/setting_screen.dart';
 import 'package:news_app/screens/sports_screen.dart';
+import 'package:news_app/widgets/theme_service.dart';
 
 import 'cubit/bloc_observer.dart';
 import 'cubit/cubit.dart';
@@ -37,104 +37,8 @@ class MyApp extends StatelessWidget {
 
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              scaffoldBackgroundColor: Colors.white,
-              appBarTheme: const AppBarTheme(
-                  systemOverlayStyle: SystemUiOverlayStyle(
-                    statusBarColor: Colors.white,
-                    statusBarIconBrightness: Brightness.dark,
-                  ),
-                  iconTheme: IconThemeData(
-                    color: Colors.black87,
-                    size: 24,
-                  ),
-                  actionsIconTheme: IconThemeData(
-                    color: Colors.black87,
-                    size: 24,
-                  ),
-                  backgroundColor: Colors.white,
-                  elevation: 0.0,
-                  titleTextStyle: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  )
-              ),
-              bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-                type: BottomNavigationBarType.fixed,
-                elevation: 10.0,
-                unselectedItemColor: Colors.black,
-              ),
-              textTheme: const TextTheme(
-                bodyText1: TextStyle(
-                  fontSize:20,
-                  color: Colors.black,
-                ),
-                headline1: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                ),
-                headline2:  TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                ),
-                headline3: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            darkTheme: ThemeData(
-              scaffoldBackgroundColor: Colors.black87,
-              appBarTheme: const AppBarTheme(
-                  systemOverlayStyle: SystemUiOverlayStyle(
-                    statusBarColor: Colors.black87,
-                    statusBarIconBrightness: Brightness.light,
-                  ),
-                  iconTheme: IconThemeData(
-                    color: Colors.white,
-                    size: 24,
-                  ),
-                  actionsIconTheme: IconThemeData(
-                    color: Colors.white,
-                    size: 24,
-                  ),
-                  backgroundColor: Colors.black,
-                  elevation: 0.0,
-                  titleTextStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  )
-              ),
-
-              bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-                type: BottomNavigationBarType.fixed,
-                elevation: 10.0,
-                unselectedItemColor: Colors.grey,
-                backgroundColor: Colors.black87,
-              ),
-              textTheme: const TextTheme(
-                bodyText1: TextStyle(
-                  fontSize:20,
-                  color: Colors.white,
-                ),
-                headline1: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-                headline2:  TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                ),
-                headline3: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+            theme: ThemeService.light(),
+            darkTheme: ThemeService.dark(),
             themeMode:AppCubit.get(context).isDark? ThemeMode.dark: ThemeMode.light,
             home: Directionality(
               textDirection: TextDirection.ltr,
@@ -145,7 +49,6 @@ class MyApp extends StatelessWidget {
               BusinessScreen.routeName: (_) => BusinessScreen(),
               ScienceScreen.routeName: (_) => ScienceScreen(),
               SportsScreen.routeName: (_) => SportsScreen(),
-              SettingScreen.routeName: (_) => SettingScreen(),
             },
           );
         },

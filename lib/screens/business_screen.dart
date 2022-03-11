@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:news_app/cubit/cubit.dart';
 import 'package:news_app/cubit/states.dart';
 import 'package:news_app/widgets/post_widget.dart';
@@ -17,7 +18,16 @@ class BusinessScreen extends StatelessWidget {
         var data = _cubit.business;
         if(state is AppLoadingState)
           return Center(
-            child: const CircularProgressIndicator(),
+            child: LoadingIndicator(
+                indicatorType: Indicator.ballScaleMultiple,
+                colors: [
+                  Colors.blue,
+                  Colors.purpleAccent,
+                  Colors.red,
+                ],
+                strokeWidth: 0.2,
+                backgroundColor: Colors.transparent,
+                pathBackgroundColor: Colors.white),
           );
          return ListView.separated(
             physics: const BouncingScrollPhysics(),

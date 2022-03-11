@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,7 +7,6 @@ import 'package:news_app/cubit/cache_helper.dart';
 import 'package:news_app/cubit/states.dart';
 import 'package:news_app/screens/business_screen.dart';
 import 'package:news_app/screens/science_screen.dart';
-import 'package:news_app/screens/setting_screen.dart';
 import 'package:news_app/screens/sports_screen.dart';
 
 import 'dio_helper.dart';
@@ -17,31 +17,13 @@ class AppCubit extends Cubit<NewsStates>{
   static AppCubit get(context) => BlocProvider.of(context);
 
   int currentIndex = 0;
-
-  List<BottomNavigationBarItem> navItems = [
-    const BottomNavigationBarItem(
-      icon: Icon(Icons.business_center),
-      label: 'Businees',
-    ),
-    const BottomNavigationBarItem(
-        icon: Icon(Icons.science),
-        label: 'Science'
-    ),
-    const BottomNavigationBarItem(
-        icon: Icon(Icons.sports),
-        label: 'Sports'
-    ),
-    const BottomNavigationBarItem(
-        icon: Icon(Icons.settings),
-        label: 'Setting'
-    ),
-  ];
+  bool isDark = false;
+  String? query;
 
   List<Widget> screens = [
     BusinessScreen(),
     ScienceScreen(),
     SportsScreen(),
-    SettingScreen()
   ];
 
   void changeBottomNavBar(int index){
@@ -56,6 +38,8 @@ class AppCubit extends Cubit<NewsStates>{
   List<dynamic> business = [];
   List<dynamic> science = [];
   List<dynamic> sports = [];
+  List<dynamic> allData = [];
+  List<dynamic> searchedData = [];
 
   void getBusinessData(){
     emit(AppLoadingState());
@@ -68,6 +52,7 @@ class AppCubit extends Cubit<NewsStates>{
       },
     ).then((value) {
       business = value.data['articles'];
+      business.forEach((element) => allData.add(element));
       emit(AppGetBusinessSuccessState());
     }).catchError((error){
       emit(AppGetBusinessErrorState(error.toString()));
@@ -87,6 +72,7 @@ class AppCubit extends Cubit<NewsStates>{
         },
       ).then((value) {
         science = value.data['articles'];
+        science.forEach((element) => allData.add(element));
         emit(AppGetScienceSuccessState());
       }).catchError((error){
         emit(AppGetScienceErrorState(error.toString()));
@@ -109,6 +95,8 @@ class AppCubit extends Cubit<NewsStates>{
         },
       ).then((value) {
         sports = value.data['articles'];
+        sports.forEach((element) => allData.add(element));
+        print(allData.length);
         emit(AppGetSportsSuccessState());
       }).catchError((error){
         emit(AppGetSportsErrorState(error.toString()));
@@ -118,8 +106,6 @@ class AppCubit extends Cubit<NewsStates>{
       emit(AppGetSportsSuccessState());
     }
   }
-
-  bool isDark = false;
 
   void changeTheme(){
     isDark = !isDark;
@@ -137,21 +123,8 @@ class AppCubit extends Cubit<NewsStates>{
     emit(AppGetSharedPrefsDataState());
   }
 
-  List search = [];
-  void getSearch(value){
-
-    search = [];
-    DioHelper.getData(
-        url: 'v2/everything',
-        query: {
-          'q': '$value',
-          'apiKey': '642384f5283a4018a6958df5c4d195c5'
-        },
-    ).then((value) {
-      search = value.data['articles'];
-      print(search[0]['title']);
-      emit(AppGetSearchDataState());
-    });
-
+  getSearchedData() {
+    searchedData = allData.where((element) => element['title']!.toLowerCase().startsWith(query!.toLowerCase())).toList();
+    emit(AppGetSearchDataState());
   }
 }

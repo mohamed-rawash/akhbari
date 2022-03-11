@@ -32,9 +32,7 @@ class PostWidget extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: imageUrl == 'Unknown' ?Container(
-                  color: Colors.blue,
-                ):Image.network(imageUrl, fit: BoxFit.cover,),
+                child: imageUrl == 'Unknown' ?Image.asset('assets/images/placeholder.png', fit: BoxFit.cover,):FadeInImage(image: NetworkImage(imageUrl), fit: BoxFit.cover, placeholder: AssetImage('assets/images/placeholder.png',),),
               ),
             ),
             const SizedBox(width: 10),
@@ -44,20 +42,23 @@ class PostWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    data[index]['title']?? 'Unknown',
+                    data[index]['title']?? 'غير معرف',
                     style: Theme.of(context).textTheme.headline1,
                     overflow: TextOverflow.ellipsis,
+                    textDirection: TextDirection.rtl,
                     maxLines: 1,
                   ),
                   Text(
-                    data[index]['author']?? 'Unknown',
+                    data[index]['author']?? 'غير معرف',
                     style:  Theme.of(context).textTheme.headline2,
+                    textDirection: TextDirection.rtl,
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    data[index]['description']?? 'Unknown',
+                    data[index]['description']?? 'غير معرف',
                     style: Theme.of(context).textTheme.bodyText1,
                     overflow: TextOverflow.ellipsis,
+                    textDirection: TextDirection.rtl,
                     maxLines: 3,
                   ),
                   const SizedBox(height: 20),
@@ -66,15 +67,17 @@ class PostWidget extends StatelessWidget {
                     child: Row(
                         children: [
                           Text(
-                            data[index]['source']['name']?? 'Unknown',
+                            data[index]['source']['name']?? 'غير معرف',
                             style: Theme.of(context).textTheme.headline3,
+                            textDirection: TextDirection.rtl,
                           ),
                           const SizedBox(width: 20),
                           Expanded(
                             child: Text(
-                              data[index]['publishedAt']?? 'Unknown',
+                              data[index]['publishedAt']?? 'غير معرف',
                               style: Theme.of(context).textTheme.headline3,
                               overflow: TextOverflow.ellipsis,
+                              textDirection: TextDirection.rtl,
                             ),
                           ),
                         ],
